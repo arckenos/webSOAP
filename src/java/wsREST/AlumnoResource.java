@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 /**
  * REST Web Service
  *
- * @author lv1822
+ * @author Arcke
  */
 @Path("alumno")
 public class AlumnoResource {
@@ -42,14 +42,14 @@ public class AlumnoResource {
 
     /**
      * Retrieves representation of an instance of wsREST.AlumnoResource
-     * @return an instance of java.lang.String
+     * @param id
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     public Response getJson(@PathParam("id") int id) {
         
-        return Response.ok().entity(new Alumno(1, "Juanito", "ISW", 6)).build();
+        return Response.ok().entity(DAO.consultar(id)).build();
     }
 
     /**
@@ -60,15 +60,16 @@ public class AlumnoResource {
     @Consumes("application/json")
     public Response postJson(Alumno alumno) {
         DAO.insertar(alumno);
-        return Response.ok().entity("Aquí está").build();
+        return Response.ok().entity(alumno).build();
     }
     
     @PUT
     @Consumes("application/json")
     @Path("{id}")
     public Response putJson(@PathParam("id") int id, Alumno alumno) {
-        
-        return Response.ok().entity("Aquí está el put").build();
+        alumno.setId(id);
+        DAO.actualizar(alumno);
+        return Response.ok().entity(alumno).build();
     }
     
     
